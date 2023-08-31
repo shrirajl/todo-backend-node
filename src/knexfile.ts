@@ -1,7 +1,7 @@
 import type { Knex } from "knex";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 // Update with your config settings.
 
@@ -19,7 +19,7 @@ const config: { [key: string]: Knex.Config } = {
     },
     migrations: {
       tableName: "knex_migrations",
-      directory: "src/db/migrations"
+      directory: "db/migrations"
     }
   },
 

@@ -1,0 +1,286 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "REST API for Swagger Documentation",
+      "version": "1.0.0"
+    },
+    "schemes": ["http"],
+    "paths": {
+      "/todos": {
+        "post": {
+          "tags": ["Todo Endpoints"],
+          "summary": "Create new Todo",
+          "description": "new todo item will be created",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoCreateSchema"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Created"
+              },
+            "400": { "description": "Not found",
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } },
+            "500": { "description": "Internal server error" ,
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } }
+          }
+        },
+        "get": {
+          "tags": ["Todo Endpoints"],
+          "summary": "Get all Todos",
+          "description": "all todos will be fetched",  
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type" : "array",
+                    "items" : {
+                    "$ref": "#/components/schemas/TodoSchema"
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Internal server error" ,
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } }
+          }
+        },
+        "delete": {
+          "tags": ["Todo Endpoints"],
+          "summary": "Delete all Todos",
+          "description": "all todos will be deleted",  
+          "responses": {
+            "204": {
+              "description": "No Content"
+              },
+            "500": { "description": "Internal server error" ,
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } 
+          }
+          }
+        }
+      },
+      "/todos/{id}": {
+        "patch": {
+          "tags": ["Todo Endpoints"],
+          "summary": "Update a Todo",
+          "description": " todo item will be updated",
+          "parameters" :[{
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "The todo ID."
+          }],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoUpdateSchema"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Success"
+              },
+            "400": { "description": "Bad Request",
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } },
+            "404": { "description": "Not found",
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } },
+            "500": { "description": "Internal server error" ,
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } }
+          }
+        },
+        "get": {
+          "tags": ["Todo Endpoints"],
+          "summary": "Get Todos by id",
+          "description": "one todo will be fetched",
+          "parameters" :[{
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "The todo ID."
+          }],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TodoSchema"
+                  }
+                }
+              }
+            },
+            "404": { "description": "Not found",
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } },
+            "500": { "description": "Internal server error" ,
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } }
+          }
+        },
+        "delete": {
+          "tags": ["Todo Endpoints"],
+          "summary": "Delete Todo by id",
+          "description": " todo will be deleted", 
+          "parameters" :[{
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "The todo ID."
+          }], 
+          "responses": {
+            "204": {
+              "description": "Success"
+              },
+            "404": { "description": "Not found",
+                "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorSchema"
+                  }
+                }
+              } },  
+            "500": { "description": "Internal server error" ,
+              "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            } 
+          }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "TodoSchema": {
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "title": {
+              "type": "string"
+            },
+            "order": {
+              "type": "number"
+            },
+            "completed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "TodoCreateSchema": {
+          "required": ["title"],
+          "properties": {
+            "title": {
+              "type": "string",
+              "example": "This is some example string!"
+            },
+            "order": {
+              "type": "number",
+              "example": "4"
+            },
+            "completed": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "TodoUpdateSchema": {
+          "properties": {
+            "title": {
+              "type": "string",
+              "example": "This is some example string!"
+            },
+            "order": {
+              "type": "number",
+              "example": "4"
+            },
+            "completed": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "ErrorSchema" : {
+          "properties": {
+            "timestamp": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+  
